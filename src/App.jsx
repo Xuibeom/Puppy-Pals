@@ -1,35 +1,41 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from "react";
+import "./App.css";
+import { puppyList } from "./data.js";
 
 function App() {
-  const [count, setCount] = useState(0)
+  console.log("This is puppyList", puppyList);
+  const [puppies, setPuppies] = useState(puppyList);
+  console.log("This is the puppies", puppies);
+  const [featPuppyID, setFeatPuppyID] = useState(null);
 
+  const featuredPuppy = puppies.find((puppy) => puppy.id === featPuppyID);
+  console.log(featuredPuppy);
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+      <div className="App">
+        {puppies.map((puppy) => {
+          // When working with lists of data in React, it needs a key to maintain the order of the elements.
+          // The unique identifier puppy.id will work in this case since it is unique for each puppy.
+          return (
+            <p onClick={() => setFeatPuppyID(puppy.id)} key={puppy.id}>
+              {puppy.name}
+            </p>
+          );
+        })}
+
+        {featPuppyID && (
+          // This is essentially the render function
+          <div>
+            <h2>{featuredPuppy.name}</h2>
+            <ul>
+              <li>Age: {featuredPuppy.age}</li>
+              <li>Email: {featuredPuppy.email}</li>
+            </ul>
+          </div>
+        )}
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
